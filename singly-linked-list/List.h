@@ -7,22 +7,22 @@ public:
     List();
     ~List();
 
-    const T &operator[](unsigned index) const;
-    void insertAtFront(T &data);
+    const T& operator[](unsigned index) const;
+    void insertAtFront(const T &data);
 
 private:
     class ListNode
     {
     public:
-        T &data;
+        T data;
         ListNode *next;
-        ListNode(T &data);
+        ListNode(const T &data);
         ~ListNode();
     };
 
-    ListNode *head;
+    ListNode *head_;
 
-    ListNode *find(T &data);
+    ListNode* find(const T &data);
 };
 
 #include "List.tpp"

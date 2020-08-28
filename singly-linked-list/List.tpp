@@ -5,7 +5,7 @@
  * Initializes the head to nullptr
 */
 template <typename T>
-List<T>::List() : head(nullptr) {}
+List<T>::List() : head_(nullptr) {}
 
 /** 
  * Destructor for the List class
@@ -14,7 +14,7 @@ List<T>::List() : head(nullptr) {}
 template <typename T>
 List<T>::~List()
 {
-    ListNode *thru = head;
+    ListNode *thru = head_;
 
     while (thru != nullptr)
     {
@@ -28,7 +28,7 @@ List<T>::~List()
 
 // Constructor for the ListNode class
 template <typename T>
-List<T>::ListNode::ListNode(T &data) : data(data), next(nullptr) {}
+List<T>::ListNode::ListNode(const T &data) : data(data), next(nullptr) {}
 
 // Destructor for the ListNode class
 template <typename T>
@@ -36,9 +36,9 @@ List<T>::ListNode::~ListNode() {}
 
 // Overloaded [] operator for the List class
 template <typename T>
-const T &List<T>::operator[](unsigned index) const
+const T& List<T>::operator[](unsigned index) const
 {
-    ListNode *thru = head;
+    ListNode *thru = head_;
 
     while (index > 0 && thru->next != nullptr)
     {
@@ -51,12 +51,12 @@ const T &List<T>::operator[](unsigned index) const
 
 // insert a ListNode at the front of the List
 template <typename T>
-void List<T>::insertAtFront(T &data)
+void List<T>::insertAtFront(const T &data)
 {
     ListNode *node = new ListNode(data);
 
-    node->next = head;
-    head = node;
+    node->next = head_;
+    head_ = node;
 }
 
 /**
@@ -64,9 +64,9 @@ void List<T>::insertAtFront(T &data)
  * List or `nullptr` if the data is not found.
  */
 template <typename T>
-typename List<T>::ListNode *List<T>::find(T &data)
+typename List<T>::ListNode* List<T>::find(const T &data)
 {
-    ListNode *thru = head;
+    ListNode *thru = head_;
     while (thru != nullptr)
     {
         if (thru->data == data)
