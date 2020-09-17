@@ -1,13 +1,10 @@
 #include "BinaryTree.h"
 
 template <typename T>
-BinaryTree<T>::BinaryTree() : root_(nullptr) {}
+BinaryTree<T>::BinaryTree()  : root_(nullptr) {}
 
 template <typename T>
-BinaryTree<T>::BinaryTree(const BinaryTree &other) = delete; // to avoid shallow copy of the tree
-
-template <typename T>
-BinaryTree<T>::BinaryTree(const std::vector<T> &contents)
+BinaryTree<T>::BinaryTree(const std::vector<T> &contents) : BinaryTree()
 {
     createCompleteTree(contents);
 }
@@ -18,6 +15,29 @@ BinaryTree<T>::~BinaryTree() { destroyWholeTree(); }
 template <typename T>
 void BinaryTree<T>::createCompleteTree(const std::vector<T> &contents)
 {
+    destroyWholeTree();
+
+    if (contents.empty())
+        return;
+
+    root_ = new TreeNode(contents[0]);
+
+    std::queue<TreeNode**> child_ptrptr_queue;
+
+    child_ptrptr_queue.push(&(root_->left));
+    child_ptrptr_queue.push(&(root_->right));
+
+    for (int i = 1; i < contents.size(); i++)
+    {
+        TreeNode **child_ptrptr = child_ptrptr_queue.front();
+        child_ptrptr_queue.pop();
+
+        TreeNode *&actual_child_ptr = *child_ptrptr;
+        actual_child_ptr = new TreeNode(contents[i]);
+
+        child_ptrptr_queue.push(&(actual_child_ptr->left));
+        child_ptrptr_queue.push(&(actual_child_ptr->right));
+    }
 }
 
 template <typename T>
@@ -45,7 +65,7 @@ void BinaryTree<T>::destroyWholeTree()
 }
 
 template <typename T>
-void BinaryTree<T>::traverseTree(const char &mode)
+void BinaryTree<T>::traverseTree(const std::string &mode)
 {
     if (mode == "preOrder")
     {
@@ -95,17 +115,13 @@ void BinaryTree<T>::postOrder(TreeNode *current_node)
 }
 
 template <typename T>
-void BinaryTree<T>::levelOrder(TreeNode *current_node)
-{
-}
-
-template <typename T>
 void BinaryTree<T>::shout(TreeNode *current_node)
 {
     if (current_node)
     {
-        std::cout << current_node->data << std::endl;
+        std::cout << current_node->data;
     }
+    std::cout << " ";
 }
 
 template <typename T>

@@ -1,5 +1,7 @@
 #pragma once
+#include <iostream>
 #include <vector>
+#include <queue>
 
 template <typename T>
 class BinaryTree
@@ -7,10 +9,10 @@ class BinaryTree
 public:
     BinaryTree();
     BinaryTree(const std::vector<T> &contents);
-    BinaryTree(const BinaryTree &other);
+    BinaryTree(const BinaryTree &) = delete; // to avoid shallow copy of the tree
     ~BinaryTree();
 
-    void traverseTree(const char &mode);
+    void traverseTree(const std::string &mode);
 
 private:
     class TreeNode
@@ -34,7 +36,6 @@ private:
     void preOrder(TreeNode *current_node);
     void inOrder(TreeNode *current_node);
     void postOrder(TreeNode *current_node);
-    void levelOrder(TreeNode *current_node);
 
     void shout(TreeNode *current_node);
 };
