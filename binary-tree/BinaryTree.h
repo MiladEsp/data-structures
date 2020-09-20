@@ -36,6 +36,7 @@ private:
     void preOrder(TreeNode *current_node);
     void inOrder(TreeNode *current_node);
     void postOrder(TreeNode *current_node);
+    void levelOrder(TreeNode *current_node);
 
     void shout(TreeNode *current_node);
 };
