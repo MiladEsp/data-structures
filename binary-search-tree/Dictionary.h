@@ -35,11 +35,11 @@ private:
     TreeNode*& find_(const K &key, TreeNode *&current_node) const;
     const D& remove_(TreeNode *&node);
 
-    TreeNode*& iop_of_(TreeNode*& current_node) const;
-    TreeNode*& rightmost_of_(TreeNode*& current_node) const;
-    TreeNode*& swap_nodes_(TreeNode*& node1, TreeNode*& node2);
+    TreeNode*& iopOf_(TreeNode*& current_node) const;
+    TreeNode*& rightmostOf_(TreeNode*& current_node) const;
+    TreeNode*& swapNodes_(TreeNode*& node1, TreeNode*& node2);    
 
-    void clear_tree();
+    void clearTree();
 };
 
 #include "Dictionary.tpp"
