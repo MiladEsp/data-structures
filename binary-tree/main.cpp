@@ -14,5 +14,8 @@ int main()
     five_tree.traverseTree("postOrder");
     std::cout << std::endl << std::endl;
     
+    five_tree.traverseTree("levelOrder");
+    std::cout << std::endl << std::endl;
+    
     return 0;
 }

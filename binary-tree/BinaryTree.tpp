@@ -1,7 +1,7 @@
 #include "BinaryTree.h"
 
 template <typename T>
-BinaryTree<T>::BinaryTree()  : root_(nullptr) {}
+BinaryTree<T>::BinaryTree() : root_(nullptr) {}
 
 template <typename T>
 BinaryTree<T>::BinaryTree(const std::vector<T> &contents) : BinaryTree()
@@ -22,7 +22,7 @@ void BinaryTree<T>::createCompleteTree(const std::vector<T> &contents)
 
     root_ = new TreeNode(contents[0]);
 
-    std::queue<TreeNode**> child_ptrptr_queue;
+    std::queue<TreeNode **> child_ptrptr_queue;
 
     child_ptrptr_queue.push(&(root_->left));
     child_ptrptr_queue.push(&(root_->right));
@@ -79,6 +79,10 @@ void BinaryTree<T>::traverseTree(const std::string &mode)
     {
         postOrder(root_);
     }
+    else if (mode == "levelOrder")
+    {
+        levelOrder(root_);
+    }
 }
 
 template <typename T>
@@ -111,6 +115,31 @@ void BinaryTree<T>::postOrder(TreeNode *current_node)
         postOrder(current_node->left);
         postOrder(current_node->right);
         shout(current_node);
+    }
+}
+
+template <typename T>
+void BinaryTree<T>::levelOrder(TreeNode *current_node)
+{
+    std::queue<TreeNode*> q;
+
+    if (current_node != nullptr)
+        q.push(current_node);
+
+    while (!q.empty())
+    {
+        for (int i = 0; i < q.size(); i++)
+        {
+            TreeNode *t = q.front();
+            q.pop();
+
+            if (t != nullptr)
+                shout(t);
+            if (t->left != nullptr)
+                q.push(t->left);
+            if (t->right != nullptr)
+                q.push(t->right);
+        }
     }
 }
 
