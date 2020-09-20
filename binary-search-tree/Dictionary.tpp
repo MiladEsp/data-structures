@@ -4,7 +4,7 @@ template <typename K, typename D>
 Dictionary<K, D>::Dictionary() : root_(nullptr) {}
 
 template <typename K, typename D>
-Dictionary<K, D>::~Dictionary() { clear_tree(); }
+Dictionary<K, D>::~Dictionary() { clearTree(); }
 
 template <typename K, typename D>
 void Dictionary<K, D>::clearTree()
@@ -97,7 +97,7 @@ const D &Dictionary<K, D>::remove_(TreeNode *&node)
     // Two child remove
     else
     {
-        TreeNode *&iop = iopOf(node);
+        TreeNode *&iop = iopOf_(node);
 
         if (!iop)
             throw std::runtime_error("IOP not found!");
@@ -115,9 +115,9 @@ typename Dictionary<K, D>::TreeNode *&Dictionary<K, D>::iopOf_(TreeNode *&curren
     if (!current_node)
         return current_node;
 
-    if (!current_node->left)
+    if (!(current_node->left))
         return current_node->left;
-
+    
     return rightmostOf_(current_node->left);
 }
 
@@ -125,10 +125,10 @@ template <typename K, typename D>
 typename Dictionary<K, D>::TreeNode *&Dictionary<K, D>::rightmostOf_(TreeNode *&current_node) const
 {
     if (!current_node)
-        return current_node;
+        return current_node;    
 
-    if (!current_node->right)
-        return current_node->right;
+    if (!(current_node->right))
+        return current_node;
 
     return rightmostOf_(current_node->right);
 }
@@ -136,6 +136,76 @@ typename Dictionary<K, D>::TreeNode *&Dictionary<K, D>::rightmostOf_(TreeNode *&
 template <typename K, typename D>
 typename Dictionary<K, D>::TreeNode *&Dictionary<K, D>::swapNodes_(TreeNode *&node1, TreeNode *&node2)
 {
+    TreeNode *orig_node1 = node1;
+    TreeNode *orig_node2 = node2;
+
+    if (node1->left == node2)
+    {
+        std::swap(node1->right, node2->right);
+
+        node1->left = orig_node2->left;
+        orig_node2->left = node1;
+        node1 = orig_node2;
+
+        return node1->left;
+    }
+    else if (node1->right == node2)
+    {
+        std::swap(node1->left, node2->left);
+
+        node1->right = orig_node2->right;
+        orig_node2->right = node1;
+        node1 = orig_node2;
+
+        return node1->right;
+    }
+    else if (node2->left == node1)
+    {
+        std::swap(node2->right, node1->right);
+
+        node2->left = orig_node1->left;
+        orig_node1->left = node2;
+        node2 = orig_node1;
+
+        return node2->left;
+    }
+    else if (node2->right == node1)
+    {
+        std::swap(node2->left, node1->left);
+
+        node2->right = orig_node1->right;
+        orig_node1->right = node2;
+        node2 = orig_node1;
+
+        return node2->right;
+    }
+    else
+    {
+        std::swap(node1->left, node2->left);
+        std::swap(node1->right, node2->right);
+        std::swap(node1, node2);
+
+        return node2;
+    }
+}
+
+template <typename K, typename D>
+void Dictionary<K, D>::printInOrder() { printInOrder_(root_); }
+
+template <typename K, typename D>
+void Dictionary<K, D>::printInOrder_(TreeNode *node)
+{
+    if (!node)
+    {
+        std::cout << " ";
+        return;
+    }
+    else
+    {
+        printInOrder_(node->left);
+        std::cout << "[" << node->key << " : " << node->data << "]";
+        printInOrder_(node->right);
+    }
 }
 
 template <typename K, typename D>

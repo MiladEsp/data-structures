@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <stdexcept>
 #include <utility>
 
@@ -11,10 +10,11 @@ public:
     Dictionary();
     ~Dictionary();
 
-    const D& find(const K &key);
+    const D &find(const K &key);
     void insert(const K &key, const D &data);
-    const D& remove(const K &key);
+    const D &remove(const K &key);
     bool empty() const;
+    void printInOrder();
 
 private:
     class TreeNode
@@ -32,14 +32,15 @@ private:
 
     TreeNode *root_;
 
-    TreeNode*& find_(const K &key, TreeNode *&current_node) const;
-    const D& remove_(TreeNode *&node);
+    TreeNode *&find_(const K &key, TreeNode *&current_node) const;
+    const D &remove_(TreeNode *&node);
 
-    TreeNode*& iopOf_(TreeNode*& current_node) const;
-    TreeNode*& rightmostOf_(TreeNode*& current_node) const;
-    TreeNode*& swapNodes_(TreeNode*& node1, TreeNode*& node2);    
+    TreeNode *&iopOf_(TreeNode *&current_node) const;
+    TreeNode *&rightmostOf_(TreeNode *&current_node) const;
+    TreeNode *&swapNodes_(TreeNode *&node1, TreeNode *&node2);
 
     void clearTree();
+    void printInOrder_(TreeNode *node);
 };
 
 #include "Dictionary.tpp"
