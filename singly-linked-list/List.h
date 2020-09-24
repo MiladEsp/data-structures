@@ -1,28 +1,26 @@
 #pragma once
 
 template <typename T>
-class List
-{
+class List {
 public:
     List();
     ~List();
 
     const T& operator[](unsigned index) const;
-    void insertAtFront(const T &data);
+    void insertAtFront(const T& data);
 
 private:
-    class ListNode
-    {
+    class ListNode {
     public:
         T data;
-        ListNode *next;
-        ListNode(const T &data);
+        ListNode* next;
+        ListNode(const T& data);
         ~ListNode();
     };
 
-    ListNode *head_;
+    ListNode* head_;
 
-    ListNode* find(const T &data);
+    ListNode* find(const T& data);
 };
 
 #include "List.tpp"

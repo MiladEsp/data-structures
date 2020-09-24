@@ -1,9 +1,7 @@
 #include "BinaryTree.h"
 
-int main()
-{
+int main() {
     BinaryTree<int> five_tree({1,2,3,4,5});
-
     
     five_tree.traverseTree("preOrder");
     std::cout << std::endl << std::endl;

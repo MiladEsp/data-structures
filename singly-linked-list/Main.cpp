@@ -1,8 +1,8 @@
 #include <iostream>
+
 #include "List.h"
 
-int main()
-{
+int main() {
     List<int> list;
 
     int item_a = 5;

@@ -1,13 +1,12 @@
 #include <iostream>
 #include <vector>
+
 #include "Dictionary.h"
 
-int main()
-{
+int main() {
     const int V_SIZE = 100;
     std::vector<int> v(100, 0);
-    for (int i = 0; i < V_SIZE; i++)
-    {
+    for (int i = 0; i < V_SIZE; i++) {
         v[i] = i;
     }
 
@@ -27,7 +26,6 @@ int main()
         std::cout << "Dictionary empty at the beginning? " << t.empty() << std::endl;
 
         std::cout << "Inserting items..." << std::endl;
-
 
         t.insert(v[37], str_thirty_seven);
         t.insert(v[19], str_nineteen);
@@ -56,23 +54,17 @@ int main()
         t.printInOrder();
         std::cout << std::endl;
 
-        try
-        {
+        try {
             std::cout << "Attempting to find a non-existent item, 51: " << std::endl;
             std::cout << "t.find(51): " << t.find(51) << std::endl;
-        }
-        catch (const std::runtime_error &e)
-        {
+        } catch (const std::runtime_error& e) {
             std::cout << "\nCaught exception with error message: " << e.what() << std::endl;
         }
 
-        try
-        {
+        try {
             std::cout << "Attempting to remove a non-existent item, 99: " << std::endl;
             std::cout << "t.remove(99): " << t.remove(99) << std::endl;
-        }
-        catch (const std::runtime_error &e)
-        {
+        } catch (const std::runtime_error& e) {
             std::cout << "\nCaught exception with error message: " << e.what() << std::endl;
         }
     }

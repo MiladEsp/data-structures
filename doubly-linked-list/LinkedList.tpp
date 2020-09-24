@@ -13,70 +13,50 @@ template <typename T>
 bool LinkedList<T>::empty() const { return !head_; }
 
 template <typename T>
-T& LinkedList<T>::front()
-{
-    if (!head_)
-    {
+T& LinkedList<T>::front() {
+    if (!head_) {
         throw std::runtime_error("front() called on empty LinkedList");
-    }
-    else
-    {
+    } else {
         return head_->data;
     }
 }
 
 template <typename T>
-T& LinkedList<T>::back()
-{
-    if (!head_)
-    {
+T& LinkedList<T>::back() {
+    if (!head_) {
         throw std::runtime_error("front() called on empty LinkedList");
-    }
-    else
-    {
+    } else {
         return tail_->data;
     }
 }
 
 template <typename T>
-const T &LinkedList<T>::front() const
-{
-    if (!head_)
-    {
+const T& LinkedList<T>::front() const {
+    if (!head_) {
         throw std::runtime_error("front() called on empty LinkedList");
-    }
-    else
-    {
+    } else {
         return head_->data;
     }
 }
 
 template <typename T>
-const T &LinkedList<T>::back() const
-{
-    if (!head_)
-    {
+const T& LinkedList<T>::back() const {
+    if (!head_) {
         throw std::runtime_error("front() called on empty LinkedList");
-    }
-    else
-    {
+    } else {
         return tail_->data;
     }
 }
 
 template <typename T>
-void LinkedList<T>::pushFront(const T &new_data)
-{
-    ListNode *new_node = new ListNode(new_data);
+void LinkedList<T>::pushFront(const T& new_data) {
+    ListNode* new_node = new ListNode(new_data);
 
-    if (!head_)
-    {
+    if (!head_) {
         head_ = new_node;
         tail_ = new_node;
-    }
-    else
-    {
-        ListNode *old_head = head_;
+    } else {
+        ListNode* old_head = head_;
         old_head->next = new_node;
         old_head->prev = new_node;
         new_node->next = old_head;
@@ -84,22 +64,17 @@ void LinkedList<T>::pushFront(const T &new_data)
     }
 
     size_++;
-    
 }
 
 template <typename T>
-void LinkedList<T>::pushBack(const T &new_data)
-{
-    ListNode *new_node = new ListNode(new_data);
+void LinkedList<T>::pushBack(const T& new_data) {
+    ListNode* new_node = new ListNode(new_data);
 
-    if (!head_)
-    {
+    if (!head_) {
         head_ = new_node;
         tail_ = new_node;
-    }
-    else
-    {
-        ListNode *old_tail = tail_;
+    } else {
+        ListNode* old_tail = tail_;
         old_tail->next = new_node;
         new_node->prev = old_tail;
         tail_ = new_node;
@@ -109,10 +84,8 @@ void LinkedList<T>::pushBack(const T &new_data)
 }
 
 template <typename T>
-void LinkedList<T>::clear()
-{
-    while (head_)
-    {
+void LinkedList<T>::clear() {
+    while (head_) {
         popBack();
     }
 
@@ -120,12 +93,10 @@ void LinkedList<T>::clear()
 }
 
 template <typename T>
-void LinkedList<T>::popFront()
-{
+void LinkedList<T>::popFront() {
     if (!head_) return;
 
-    if (!head_->next)
-    {
+    if (!head_->next) {
         delete head_;
         head_ = nullptr;
         tail_ = nullptr;
@@ -137,10 +108,10 @@ void LinkedList<T>::popFront()
         return;
     }
 
-    ListNode *old_head = head_;
+    ListNode* old_head = head_;
     head_ = head_->next;
     head_->prev = nullptr;
-    
+
     delete old_head;
     old_head = nullptr;
 
@@ -148,12 +119,10 @@ void LinkedList<T>::popFront()
 }
 
 template <typename T>
-void LinkedList<T>::popBack()
-{
+void LinkedList<T>::popBack() {
     if (!head_) return;
 
-    if (!tail_->prev)
-    {
+    if (!tail_->prev) {
         delete tail_;
         head_ = nullptr;
         tail_ = nullptr;
@@ -163,7 +132,7 @@ void LinkedList<T>::popBack()
         if (0 != size_) throw std::runtime_error("Error in popBack");
     }
 
-    ListNode *old_tail = tail_;
+    ListNode* old_tail = tail_;
     tail_ = tail_->prev;
     tail_->next = nullptr;
 
@@ -177,7 +146,7 @@ template <typename T>
 LinkedList<T>::ListNode::ListNode() : next(nullptr), prev(nullptr) {}
 
 template <typename T>
-LinkedList<T>::ListNode::ListNode(const T &data) : next(nullptr), prev(nullptr), data(data) {}
+LinkedList<T>::ListNode::ListNode(const T& data) : next(nullptr), prev(nullptr), data(data) {}
 
 template <typename T>
 LinkedList<T>::ListNode::~ListNode() {}

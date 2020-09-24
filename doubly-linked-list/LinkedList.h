@@ -3,8 +3,7 @@
 #include <stdexcept>
 
 template <typename T>
-class LinkedList
-{
+class LinkedList {
 public:
     LinkedList();
     ~LinkedList();
@@ -15,27 +14,26 @@ public:
     T& back();
     const T& front() const;
     const T& back() const;
-    void pushFront(const T &new_data);
-    void pushBack(const T &new_data);
+    void pushFront(const T& new_data);
+    void pushBack(const T& new_data);
     void clear();
     void popBack();
     void popFront();
 
 public:
-    class ListNode
-    {
+    class ListNode {
     public:
         T data;
-        ListNode *next;
-        ListNode *prev;
+        ListNode* next;
+        ListNode* prev;
 
         ListNode();
-        ListNode(const T &data);
+        ListNode(const T& data);
         ~ListNode();
     };
 
-    ListNode *head_;
-    ListNode *tail_;
+    ListNode* head_;
+    ListNode* tail_;
 
     size_t size_;
 };

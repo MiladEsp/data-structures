@@ -1,8 +1,8 @@
 #include <iostream>
+
 #include "LinkedList.h"
 
-int main()
-{
+int main() {
     LinkedList<int> list;
 
     list.pushBack(5);
@@ -15,7 +15,7 @@ int main()
     std::cout << "Front element of the linked list: " << list.front() << std::endl;
     std::cout << "Back element of the linked list: " << list.back() << std::endl;
     std::cout << "------------------------" << std::endl;
-    
+
     list.popBack();
     list.popFront();
 
