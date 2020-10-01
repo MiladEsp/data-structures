@@ -92,10 +92,37 @@ const D& AVL<K, D>::remove(TreeNode*& node) {
 
 template <typename K, typename D>
 void AVL<K, D>::findAndInsert(const K& key, const D& data, TreeNode*& current_node) {
+    if (current_node == nullptr) {
+        current_node = new TreeNode(key, data);
+        return;
+    } else if (key == current_node->key) {
+        throw std::runtime_error("ERROR: Key already exists.");
+    } else if (key < current_node->key) {
+        findAndInsert(key, data, current_node->left);
+        ensureBalance(current_node);
+        return;
+    } else {
+        findAndInsert(key, data, current_node->right);
+        ensureBalance(current_node);
+        return;
+    }
 }
 
 template <typename K, typename D>
 const D& AVL<K, D>::findAndRemove(const K& key, TreeNode*& current_node) {
+    if (current_node == nullptr) {
+        throw std::runtime_error("Error: Key not found to remove.");
+    } else if (key == current_node->key) {
+        return remove(current_node);
+    } else if (key < current_node->key) {
+        const D& d = findAndRemove(key, current_node->left);
+        ensureBalance(current_node);
+        return d;
+    } else {
+        const D& d = findAndRemove(key, current_node->right);
+        ensureBalance(current_node);
+        return d;
+    }
 }
 
 template <typename K, typename D>
@@ -146,10 +173,40 @@ typename AVL<K, D>::TreeNode*& AVL<K, D>::swapNodes(TreeNode*& node1, TreeNode*&
 
 template <typename K, typename D>
 const D& AVL<K, D>::iopRemove(TreeNode*& target_node) {
+    if (!target_node)
+        throw std::runtime_error("ERROR: iopRemove called on nullptr.");
+
+    const D& d = iopRemove(target_node, target_node->left, true);
+
+    if (target_node->left)
+        ensureBalance(target_node->left);
+    ensureBalance(target_node);
+
+    return d;
 }
 
 template <typename K, typename D>
 const D& AVL<K, D>::iopRemove(TreeNode*& target_node, TreeNode*& iop_ancestor, bool is_initial_call) {
+    if (!target_node) {
+        throw std::runtime_error("ERROR: _iopRemove: targetNode is null");
+    }
+
+    if (!iop_ancestor) {
+        throw std::runtime_error("ERROR: _iopRemove: iopAncestor is null");
+    }
+
+    if (iop_ancestor->right != nullptr) {
+        const D& d = iopRemove(target_node, iop_ancestor->right, false);
+
+        if (!is_initial_call) {
+            if (iop_ancestor)
+                ensureBalance(iop_ancestor);
+        }
+    } else {
+        TreeNode*& moved_target = swapNodes(target_node, iop_ancestor);
+        const D& d = remove(moved_target);
+        return d;
+    }
 }
 
 template <typename K, typename D>
@@ -185,6 +242,56 @@ void AVL<K, D>::updateHeight(TreeNode*& current_node) {
 
 template <typename K, typename D>
 void AVL<K, D>::ensureBalance(TreeNode*& current_node) {
+    if (!current_node)
+        return;
+
+    const int initial_balance = getBalanceFactor(current_node);
+
+    if (initial_balance < -2 || initial_balance > 2) {
+        std::string msg("ERROR: invalid initial balance factor: ");
+        msg += std::to_string(initial_balance);
+        msg += " ; This should never happen.";
+        std::cerr << "current node key: " << current_node->key << " current node data: " << current_node->data << std::endl;
+        std::cerr << "left node key: " << current_node->left->key << " right node key: " << current_node->right->key << std::endl;
+        std::cerr << "left node height: " << getHeight(current_node->left) << " right node height: " << getHeight(current_node->right) << std::endl;
+        throw std::runtime_error(msg);
+    }
+
+    if (initial_balance == -2) {
+        const int l_balance = getBalanceFactor(current_node->left);
+        if (l_balance == -1 || l_balance == 0) {
+            rotateRight(current_node);
+        } else if (l_balance == 1) {
+            rotateLeftRight(current_node);
+        } else {
+            std::string msg("ERROR: l_balance has unexpected value: ");
+            msg += std::to_string(l_balance);
+            msg += " ; This should never happen here.";
+            throw std::runtime_error(msg);
+        }
+    } else if (initial_balance == 2) {
+        const int r_balance = getBalanceFactor(current_node->right);
+        if (r_balance == 1 || r_balance == 0) {
+            rotateLeft(current_node);
+        } else if (r_balance == -1) {
+            rotateRightLeft(current_node);
+        } else {
+            std::string msg("ERROR: r_balance has unexpected value: ");
+            msg += std::to_string(r_balance);
+            msg += " ; This should never happen here.";
+            throw std::runtime_error(msg);
+        }
+    }
+
+    updateHeight(current_node);
+
+    const int final_balance = getBalanceFactor(current_node);
+    if (final_balance < -1 || final_balance > 1) {
+        std::string msg("ERROR: Invalid balance factor after ensureBalance: ");
+        msg += std::to_string(final_balance);
+        msg += " ; Something went wrong.";
+        throw std::runtime_error(msg);
+    }
 }
 
 template <typename K, typename D>
