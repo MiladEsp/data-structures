@@ -9,6 +9,13 @@ template <typename K, typename D>
 AVL<K, D>::~AVL() { clearTree(); }
 
 template <typename K, typename D>
+void AVL<K, D>::clearTree() {
+    while (root) {
+        remove(root->key);
+    }
+}
+
+template <typename K, typename D>
 const D& AVL<K, D>::find(const K& key) {
     TreeNode*& node = find(key, root);
 
@@ -21,7 +28,7 @@ const D& AVL<K, D>::find(const K& key) {
 
 template <typename K, typename D>
 void AVL<K, D>::insert(const K& key, const D& data) {
-    findAndInsert(key, data);
+    findAndInsert(key, data, root);
 }
 
 template <typename K, typename D>
@@ -130,6 +137,8 @@ typename AVL<K, D>::TreeNode*& AVL<K, D>::swapNodes(TreeNode*& node1, TreeNode*&
     TreeNode* orig_node1 = node1;
     TreeNode* orig_node2 = node2;
 
+    std::swap(node1->height, node2->height);
+
     if (node1->left == node2) {
         std::swap(node1->right, node2->right);
 
@@ -199,20 +208,16 @@ const D& AVL<K, D>::iopRemove(TreeNode*& target_node, TreeNode*& iop_ancestor, b
         const D& d = iopRemove(target_node, iop_ancestor->right, false);
 
         if (!is_initial_call) {
-            if (iop_ancestor)
+            if (iop_ancestor) {
                 ensureBalance(iop_ancestor);
+            }
         }
+
+        return d;
     } else {
         TreeNode*& moved_target = swapNodes(target_node, iop_ancestor);
         const D& d = remove(moved_target);
         return d;
-    }
-}
-
-template <typename K, typename D>
-void AVL<K, D>::clearTree() {
-    while (root) {
-        remove(root->key);
     }
 }
 
@@ -237,7 +242,7 @@ void AVL<K, D>::updateHeight(TreeNode*& current_node) {
     if (!current_node)
         return;
 
-    current_node->height += std::max(getHeight(current_node->left), getHeight(current_node->right));
+    current_node->height = 1 + std::max(getHeight(current_node->left), getHeight(current_node->right));
 }
 
 template <typename K, typename D>
@@ -337,8 +342,8 @@ void AVL<K, D>::rotateLeftRight(TreeNode*& current_node) {
     if (!current_node)
         throw std::runtime_error("ERROR: rotateLeftRight called on nullptr");
 
-    rotateRight(current_node->left);
-    rotateLeft(current_node);
+    rotateLeft(current_node->left);
+    rotateRight(current_node);
 }
 
 template <typename K, typename D>

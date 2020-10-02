@@ -17,6 +17,7 @@ public:
 
     bool empty() const;
     bool contains(const K& key);
+    void clearTree();
 
 private:
     class TreeNode {
@@ -41,7 +42,6 @@ private:
     const D& iopRemove(TreeNode*& target_node);
     const D& iopRemove(TreeNode*& target_node, TreeNode*& iop_ancestor, bool is_initial_call);
 
-    void clearTree();
     int getHeight(TreeNode*& node) const;
     int getBalanceFactor(TreeNode*& node) const;
     void updateHeight(TreeNode*& current_node);
