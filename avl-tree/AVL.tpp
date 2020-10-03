@@ -18,12 +18,16 @@ void AVL<K, D>::clearTree() {
 template <typename K, typename D>
 const D& AVL<K, D>::find(const K& key) {
     TreeNode*& node = find(key, root);
-
-    if (!node) {
+    if (node == nullptr) {
         throw std::runtime_error("ERROR: Key not found");
     }
-
     return node->data;
+}
+
+template <typename K, typename D>
+bool AVL<K, D>::contains(const K& key) {
+    TreeNode*& node = find(key, root);
+    return node != nullptr;
 }
 
 template <typename K, typename D>
@@ -40,16 +44,10 @@ const D& AVL<K, D>::remove(const K& key) {
 template <typename K, typename D>
 bool AVL<K, D>::empty() const { return !root; }
 
-template <typename K, typename D>
-bool AVL<K, D>::contains(const K& key) {
-    TreeNode*& node = find(key, root);
-    return node != nullptr;
-}
-
 /*************** AVL class: private functions ***************/
 template <typename K, typename D>
 typename AVL<K, D>::TreeNode*& AVL<K, D>::find(const K& key, TreeNode*& current_node) const {
-    if (!current_node)
+    if (current_node == nullptr)
         return current_node;
     else if (key == current_node->key)
         return current_node;
@@ -67,10 +65,8 @@ const D& AVL<K, D>::remove(TreeNode*& node) {
     // Zero child remove
     if (node->left == nullptr && node->right == nullptr) {
         const D& data = node->data;
-
         delete node;
         node = nullptr;
-
         return data;
     }
     // One child (left) remove
@@ -83,7 +79,7 @@ const D& AVL<K, D>::remove(TreeNode*& node) {
         return data;
     }
     // One child (right) remove
-    else if (node->right != nullptr && node->left == nullptr) {
+    else if (node->left == nullptr && node->right != nullptr) {
         const D& data = node->data;
         TreeNode*& temp = node;
         node = node->right;
@@ -239,16 +235,14 @@ int AVL<K, D>::getBalanceFactor(TreeNode*& node) const {
 
 template <typename K, typename D>
 void AVL<K, D>::updateHeight(TreeNode*& current_node) {
-    if (!current_node)
-        return;
+    if (!current_node) return;
 
     current_node->height = 1 + std::max(getHeight(current_node->left), getHeight(current_node->right));
 }
 
 template <typename K, typename D>
 void AVL<K, D>::ensureBalance(TreeNode*& current_node) {
-    if (!current_node)
-        return;
+    if (!current_node) return;
 
     const int initial_balance = getBalanceFactor(current_node);
 

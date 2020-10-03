@@ -45,6 +45,9 @@ int main() {
         t.insert(int_storage[5], string_storage[5]);
         t.insert(int_storage[6], string_storage[6]);
         t.insert(int_storage[7], string_storage[7]);
+        t.insert(int_storage[17], string_storage[17]);
+        t.insert(int_storage[67], string_storage[67]);
+        t.insert(int_storage[66], string_storage[66]);
 
         const bool empty_after_insertions = t.empty();
         std::cout << "AVL tree empty after insertions? " << empty_after_insertions << std::endl;
@@ -60,6 +63,9 @@ int main() {
         std::cout << "t.remove(51): " << t.remove(51) << std::endl;
         std::cout << "t.remove(19): " << t.remove(19) << std::endl;
         std::cout << "t.remove(6): " << t.remove(6) << std::endl;
+        std::cout << "t.remove(67): " << t.remove(67) << std::endl;
+        std::cout << "t.remove(66): " << t.remove(66) << std::endl;
+        std::cout << "t.remove(17): " << t.remove(17) << std::endl;
 
         try {
             std::cout << std::endl;
@@ -79,56 +85,6 @@ int main() {
         } catch (const std::runtime_error& e) {
             std::cout << "(OK) Caught example exception with the following message:" << std::endl
                       << "\"" << e.what() << "\"" << std::endl;
-        }
-
-        if (V_SIZE >= 1000) {
-            std::cout << "\n --- Beginning extended tests ---\n"
-                      << "  (Many items will be inserted and removed silently...)" << std::endl;
-
-            t.clearTree();
-
-            for (int i = 10; i <= 900; i++) {
-                t.insert(int_storage[i], string_storage[i]);
-            }
-            std::cout << "\nInsert test OK\n";
-
-            for (int i = 10; i <= 900; i += 7) {
-                t.remove(i);
-            }
-            for (int i = 900; i >= 10; i -= 3) {
-                if (t.contains(i)) {
-                    t.remove(i);
-                }
-            }
-            std::cout << "\nRemove test OK\n";
-
-            for (int i = 10; i <= 899; i += 2) {
-                if (!t.contains(i)) {
-                    t.insert(int_storage[i], string_storage[i]);
-                }
-                if (!t.contains(i + 1)) {
-                    t.insert(int_storage[i + 1], string_storage[i + 1]);
-                }
-                int j = 900 - i + 10;
-                if (!t.contains(j)) {
-                    t.insert(int_storage[j], string_storage[j]);
-                }
-            }
-            
-            for (int i = 10; i <= 900; i += 7) {
-                if (t.contains(i)) {
-                    t.remove(i);
-                }
-                
-                int j = 900 - i + 10;
-                if (t.contains(j)) {
-                    t.remove(j);
-                }
-            }
-            std::cout << "\n --- End of extended tests ---" << std::endl;
-
-        } else {
-            std::cout << "\n(V_SIZE is set too small. skipping extended unit tests.)" << std::endl;
         }
 
         std::cout << "\nAVL tree will go out of scope and be destroyed now."
